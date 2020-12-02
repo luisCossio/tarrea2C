@@ -50,7 +50,6 @@ class filter_basic_individual(individual):
             self.__filters = self.create_filters()
         else:
             self.__filters = filter
-        self.set_fitness(-1000)  # minimum fitness
 
 
 
@@ -63,8 +62,12 @@ class filter_basic_individual(individual):
         self.mutate_layer(index)
 
     def mutate_layer(self, index_layer):
-        pass
-
+        shape = self.__filters[index_layer].shape
+        indexes = []
+        for i in range(4):
+            indexes += [np.random.randint(0,shape[i])]
+        self.__filters[index_layer][indexes[0],indexes[1],indexes[2],indexes[3]] = np.random.randint(cg.lower_limit,
+                                                                                                     cg.upper_limit+1)
 
     def mutation_dna(self):
         pass
@@ -96,8 +99,10 @@ class filter_basic_individual(individual):
         Args:
             data_manager (data_manager.Filter_processor):
         """
-        fitness = data_manager.evaluate(self.filters_per_layer,self.mean,self.var)
+        fitness,mean,var = data_manager.evaluate(self.__filters,self.mean,self.var)
         self.set_fitness(fitness)
+        self.mean = mean
+        self.var = var
         # return result
 
     def create_filters(self):

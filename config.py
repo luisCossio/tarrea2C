@@ -23,7 +23,9 @@ dtype_masks = np.float32
 batch_size = 8
 dtype_images = np.float32
 pooling_stride = 2
+minimum_std = 0.0001
 minimum_score = 6.14421235332821e-06  # exp(-12)
+# minimum_log_result = -12  # log(exp(-12))
 
 
 
@@ -37,3 +39,9 @@ kernel_size = 3
 upper_limit = 1
 lower_limit = -1
 kernel_type = np.int32
+
+###############################################################
+#### genetic algorithm parameters #############################
+###############################################################
+
+path_save = 'models'

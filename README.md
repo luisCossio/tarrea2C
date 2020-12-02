@@ -14,18 +14,42 @@ Thanks to the publisher surajmishra for the submission of the dataset and source
 
 
 ## Structure
-The structure of the project:
+The structure of the project is:
   ```
   GA_WBC_detection
   ├── BCCD_Dataset-master
-  │   └── ... #BCCD dataset
-  ├── resources images # Figures of the results
+  │   └── BCCD 
+  │   │     └── Annotations
+  │   │     └── ImageSets
+  │   │     └── JPEGImages
+  │   └── dataset
+  │   │     └── mxnet
+  │   └── scripts
+  │   │     └── prepro.py
+  │   │     └── test.py
+  │   └── example.jpg
+  │   └── export.py
+  │   └── LICENSE
+  │   └── plot.py
+  │   └── README.md
+  │   └── test.csv
+  ├── resources images # Folder for results
   │   └── image_and_mask.png  
+  ├── models # Folder for population and best individuals. 
+  │   └── population_6.pickle  
   ├── config.py         # config file
   ├── data_manager.py   # data manager files 
   ├── LICENSE
   └── README.md
   ```
+Most of the files inside de folder BCCD_Dataset-master are unnecessary to have for the purposes of this project, but since the images were necessary and heavy, it was decided to not upload the project with the entirety of the files needed. 
+Instead it was uploaded the files exclusive for this project.   
+
+## Deployment
+To use the genetic algorithm file and start evolving a population use the next command:
+```
+python Genetic_algorithm.py --population 25 --mutation 0.1 --epochs 50  --output-dir models --resume 0 --samples-train -1
+```
 
 
 ## Description of Algorithm
@@ -51,18 +75,21 @@ The structure of the project:
     
 *   The last Layer uses a sigmoid function to model and output mask defined between [0,1]. Said result is then re-scaled so the maximum value of the output mask is 1.0. This is done because some output masks achieved a max value below 1.0, for example 0.74, but given that said value is the maximum in all the mask it's locigal to take as 1.0, and scale all of the rest result accordingly.    
      
-*   Score is the calculated as the -(cross-entropy) of the mask output, with the predicted mask.  
+*   Score is then calculated as the -(cross-entropy) of the mask output, with the predicted mask.  
     
 ## Results 
+The initial best filter used in the test dataset produce the next image:
+  ![example](./resources images/result.png)
 
 ## Libraries
-numpys matplotlib scipy scikit learn
+numpys matplotlib scipy scikit-learn
 
 
 ## Installation
 ## Setting up BCCD repository
-
-
+In order to download the dataset and files use the kaggle dataset link [BCCD](https://www.kaggle.com/surajiiitm/bccd-dataset). 
+Download and install in such a way that this repository folder follows the structure explain previously. 
+ 
 ### Install python
 In order to install the programing language follow the installation instructions in the official site:
 
@@ -78,16 +105,6 @@ To install the libraries just run the next code in the commando line using pip:
 ```
 pip install -r requirements.txt
 ```
-
-
-
-## Deployment
-To use the neural network just run the python program with the following command, referencing this folder:
-```
-python .py 
-```
-This loads the dataset, split it and normalize it. Then trains the network, show the confusion and matrix and plot the error, 
-
 
 ## Info
 Language: Python

@@ -91,7 +91,7 @@ class population_filters(Population_base):
         best_fit = -1000
         champion = -1
         for i in range(self.n_random_tournament):
-            samples[i].fitness(self.manager)
+            # samples[i].fitness(self.manager)
             if samples[i].get_fitness() > best_fit:
                 champion = i
                 best_fit = samples[i].get_fitness()
@@ -113,20 +113,20 @@ class population_filters(Population_base):
         return Individual
 
     def calculate_best_score(self):
-        score = 0
+        score = -1000
         for i in range(self.n_population):
-            self.population[i].fitness(self.__key_word)
+            self.population[i].fitness(self.manager)
             if score < self.population[i].get_fitness():
                 score = self.population[i].get_fitness()
-                self.best_word = self.population[i].get_word()
+                self.best_filter = self.population[i].get_filters()
                 self.set_best_individual(self.population[i])
-        self.best_score = score/self.n_gen
+        self.best_score = score
         return self.best_score
 
 
     def show_answer(self):
         print("Best score: ",self.best_score)
-        print("Winner Word: ",self.best_word)
+        # print("Winner filter: ",self.best_filter)
 
     def set_training_dataset_size(self,size):
         self.manager.set_training_set_size(size)

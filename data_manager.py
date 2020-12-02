@@ -56,9 +56,9 @@ class image_loader:
         if self.__mode == "Train":
             return self.names_train[index] + cg.extension
         elif self.__mode == "Val":
-            return self.names_val[index]
+            return self.names_val[index] + cg.extension
         elif self.__mode == "Test":
-            return self.names_test[index]
+            return self.names_test[index] + cg.extension
 
     def get_names(self, index, end = -1):
         if self.__mode == "Train":
@@ -132,10 +132,6 @@ class image_loader:
         return range(self.number_imgs)
 
     def colour_mask(self, mask, xmin, ymin, xmax, ymax):
-        #         mask[ymin, xmin:xmax] = 255
-        #         mask[ymax-1, xmin:xmax] = 255
-        #         mask[ymin:ymax, xmin] = 255
-        #         mask[ymin:ymax, xmax-1] = 255
         mask[ymin:ymax, xmin:xmax] = 1
 
 
@@ -167,10 +163,11 @@ class Filter_processor:
         score = 0
         samples_thus_far = 0
 
-        if self.end%self.batch_size == 0:
+        if self.end % self.batch_size == 0:
             steps = np.arange(self.batch_size, self.end, self.batch_size)
         else:
-            steps = np.array([np.arange(self.batch_size, self.end+1, self.batch_size), [self.end]]).reshape(-1)
+            steps = np.concatenate((np.arange(self.batch_size, self.end+1, self.batch_size), np.array([self.end])))
+        # print("evaluating {:d} samples".format(self.end))
         for i in steps:
             tensor = self.get_samples_img(samples_thus_far, i)#get batch
 
@@ -186,7 +183,22 @@ class Filter_processor:
 
             score += self.score_predictions(mask,mask_output)
 
-        return score/self.end  # return average score
+        return score/self.end, Mean, Var  # return average score
+
+    def predict_img(self,filter,mean,var,images_ind):
+        tensor = self.get_samples_img(images_ind, images_ind+1)  # get batch
+
+        # convolution_result = self.convolution_layer_batch(tensor,self.batch_size,Filter[0],
+        #                                                   Mean[0],Var[0],samples_thus_far)
+        #
+
+        mask_output, Mean, Var = self.forward(tensor, 1,
+                                              filter, mean, var, 100)
+
+
+        mask_output = self.expand_tensor(mask_output, cg.img_rows, cg.img_cols)
+
+        return mask_output
 
     def get_samples_img(self, init, end):
         """
@@ -253,6 +265,8 @@ class Filter_processor:
                 mean[i] = self.update_value(new_mean,mean[i],batch_size,samples)  # weighted average
                 std[i] = self.update_value(new_std,std[i],batch_size,samples)
                 # print("mean: ", mean[i])
+                if std[i] < cg.minimum_std:
+                    std[i] = cg.minimum_std
                 tensor = (tensor-mean[i])/std[i]  # normalization
 
             else:  # final layer
@@ -347,14 +361,14 @@ class Filter_processor:
             # print("resulting extrapolation: \n", result)
         return result
 
-
-
-
-
     def score_predictions(self, mask, mask_output):
-        score = np.where(mask <= cg.minimum_score, cg.minimum_score, mask_output)#
-        score = np.where(mask==1,np.log(score),np.log(1-score))  # -entropy per pixel.
-
+        # print("minimum: ", mask_output.min())
+        score = np.where(mask_output <= cg.minimum_score, cg.minimum_score, mask_output)#
+        # print("minimum: ",score.min())
+        neg_log = 1-mask_output
+        neg_log = np.where(neg_log <= cg.minimum_score, cg.minimum_score, neg_log)#
+        neg_log = np.log(neg_log)
+        score = np.where(mask==1,np.log(score),neg_log)  # -entropy per pixel.
         return np.mean(score,axis=(0,1,2)) # we want to maximize
 
 
