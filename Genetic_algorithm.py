@@ -103,6 +103,9 @@ def main(args):
     save_element(args.output_dir, 'population_{:d}.pickle'.format(int(args.epochs)), genetic_algorithm.population)
     print("best: ", best.get_fitness())
     print("averge result: ", average)
+    for i in range(len(best_samples)):
+        print("winner results is: ", best_samples[i].get_fitness())
+    print("averge result: ", average)
 
 
 if __name__ == "__main__":
