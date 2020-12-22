@@ -113,36 +113,36 @@ def main(args):
     print("averge result: ", average)
 
 #
-# if __name__ == "__main__":
-#     import argparse
-#     parser = argparse.ArgumentParser(description='Genetic algorithm trainnig for WBC detection')
-#     parser.add_argument('--population', default=25, help='population size',type=int)
-#     parser.add_argument('--mutation', default=0.1, help='population size', type=float)
-#     parser.add_argument('--epochs', default=50, help='number of total epochs to run',type=int)
-#     parser.add_argument('--output-dir', default='models', help='path where to save')
-#     parser.add_argument('--resume', default=0, help='resume from model number',type=int)
-#     # parser.add_argument('--ask', default=10, help='ask to continue every n epochs')
-#     parser.add_argument('--samples-train', default=-1, help='bool to determine if we use just part of the training '
-#                                                               'dataset',type=int)  # to speed up training at first use just a
-#     # part if the training dataset. default -1 wich means use all dataset.
-#     args = parser.parse_args()
+if __name__ == "__main__":
+    import argparse
+    parser = argparse.ArgumentParser(description='Genetic algorithm trainnig for WBC detection')
+    parser.add_argument('--population', default=25, help='population size',type=int)
+    parser.add_argument('--mutation', default=0.1, help='population size', type=float)
+    parser.add_argument('--epochs', default=50, help='number of total epochs to run',type=int)
+    parser.add_argument('--output-dir', default='models', help='path where to save')
+    parser.add_argument('--resume', default=0, help='resume from model number',type=int)
+    # parser.add_argument('--ask', default=10, help='ask to continue every n epochs')
+    parser.add_argument('--samples-train', default=-1, help='bool to determine if we use just part of the training '
+                                                              'dataset',type=int)  # to speed up training at first use just a
+    # part if the training dataset. default -1 wich means use all dataset.
+    args = parser.parse_args()
+
+    main(args)
+
+
+# class Namespace:
+#     def __init__(self, **kwargs):
+#         self.__dict__.update(kwargs)
 #
-#     main(args)
-
-
-class Namespace:
-    def __init__(self, **kwargs):
-        self.__dict__.update(kwargs)
-
-
-args = Namespace(population=50,  # 5, 15 50
-                 mutation=0.1,  # 0.01, 0.1, 0.4
-                 epochs=50,
-                 output_dir='models',
-                 resume=26,
-                 samples_train=50)
+#
+# args = Namespace(population=50,  # 5, 15 50
+#                  mutation=0.1,  # 0.01, 0.1, 0.4
+#                  epochs=50,
+#                  output_dir='models',
+#                  resume=26,
+#                  samples_train=50)
 
 ## 0_0_ = population 5, mutation = 0.01
 ## 1_0 = population 5, mutation = 0.1
 
-main(args)
+# main(args)
