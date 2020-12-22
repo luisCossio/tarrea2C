@@ -25,7 +25,7 @@ dtype_images = np.float32
 pooling_stride = 2
 minimum_std = 0.0001
 minimum_score = 6.14421235332821e-06  # exp(-12)
-# minimum_log_result = -12  # log(exp(-12))
+minimum_log_result = -12  # log(exp(-12))
 
 
 
@@ -33,7 +33,7 @@ minimum_score = 6.14421235332821e-06  # exp(-12)
 #### Individuals parameters ###################################
 ###############################################################
 starting_layers = 3
-filters_per_layers = [2, 2, 1]# last value must always be = 1
+filters_per_layers = [5,3, 2, 2, 1]# last value must always be = 1
 
 kernel_size = 3
 upper_limit = 1

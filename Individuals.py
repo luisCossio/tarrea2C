@@ -93,11 +93,12 @@ class filter_basic_individual(individual):
         return filter_basic_individual(cg.filters_per_layers,filters)
 
 
-    def fitness(self, data_manager):
+    def fitness(self, data_manager) -> None:
         """
-
+        Method to calculate fitness and set it in the individual
         Args:
             data_manager (data_manager.Filter_processor):
+
         """
         fitness,mean,var = data_manager.evaluate(self.__filters,self.mean,self.var)
         self.set_fitness(fitness)

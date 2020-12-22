@@ -81,6 +81,10 @@ python Genetic_algorithm.py --population 25 --mutation 0.1 --epochs 50  --output
 The initial best filter used in the test dataset produce the next image:
   ![example](./resources images/result.png)
 
+
+The performance of the method for differents GA parameters (mutation rate and population size), in the test dataset was:
+
+  ![example](./resources images/heatmap.png)
 ## Libraries
 numpys matplotlib scipy scikit-learn
 

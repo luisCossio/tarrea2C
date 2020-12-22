@@ -270,6 +270,7 @@ class Filter_processor:
                 tensor = (tensor-mean[i])/std[i]  # normalization
 
             else:  # final layer
+                tensor = np.maximum(cg.minimum_log_result, tensor)  # lower limitation
                 tensor = 1/(1+np.exp(-tensor))  # sigmoid
                 tensor = tensor/(np.max(tensor,axis=(1,2))[:,None,None])  # Standardization [0,1]
         return tensor, mean, std
